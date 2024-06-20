@@ -69,53 +69,57 @@ async function borrowed() {
       returnButtons.forEach((button) => {
         button.addEventListener("click", handleReturnClick);
       });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
 
-async function handleReturnClick(event) {
-  try {
-    const button = event.currentTarget;
-    const div = button.parentNode;
+      // Event handler function
+      async function handleReturnClick(event) {
+        try {
+          const button = event.currentTarget;
+          const div = button.parentNode;
 
-    // Access the book details from the div element
+          // Access the book details from the div element
+          // const bookName = div.querySelector("label[data-value]").dataset.value;
+          //select all children
 
-    //select all children
+          const allChildren = div.querySelectorAll("*");
+          const bookName = allChildren[0].dataset.value;
+          console.log(bookName, "from all children");
+          console.log(allChildren);
 
-    const allChildren = div.querySelectorAll("*");
-    const bookName = allChildren[0].dataset.value;
-    console.log(bookName, "from all children");
-    console.log(allChildren);
+          const fine = parseInt(allChildren[3].dataset.value);
+          console.log(fine, "fine from all children");
 
-    const fine = parseInt(allChildren[3].dataset.value);
-    console.log(fine, "fine from all children");
+          if (fine > 0) {
+            div.innerHTML = "";
+            const input = document.createElement("input");
+            input.placeholder = `${fine}`;
+            div.appendChild(input);
+            const payFine = document.createElement("button");
+            payFine.id = "fineButton";
+            payFine.textContent = "pay fine";
+            div.appendChild(payFine);
+            // const payFinelistener = div.querySelector("#fineButton");
 
-    if (fine > 0) {
-      div.innerHTML = "";
-      const input = document.createElement("input");
-      input.placeholder = `${fine}`;
-      div.appendChild(input);
-      const payFine = document.createElement("button");
-      payFine.textContent = "pay fine";
-      div.appendChild(payFine);
-      // const payFinelistener = div.querySelector("#fineButton");
-
-      payFine.addEventListener("click", async (event) => {
-        event.preventDefault();
-        const updateData = await axios.get(`${url}/updateData/${bookName}`);
-        console.log(updateData.data);
-        // div.innerHTML = "";
-        div.remove();
-        returnedBooks();
-      });
-    } else {
-      const updateData = await axios.get(`${url}/updateData/${bookName}`);
-      console.log(updateData.data);
-      // div.innerHTML = "";
-      div.remove();
-      returnedBooks();
+            payFine.addEventListener("click", async (event) => {
+              event.preventDefault();
+              const updateData = await axios.get(
+                `${url}/updateData/${bookName}`
+              );
+              console.log(updateData.data);
+              // div.innerHTML = "";
+              div.remove();
+              returnedBooks();
+            });
+          } else {
+            const updateData = await axios.get(`${url}/updateData/${bookName}`);
+            console.log(updateData.data);
+            // div.innerHTML = "";
+            div.remove();
+            returnedBooks();
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
     }
   } catch (err) {
     console.log(err);
@@ -204,3 +208,44 @@ form1.addEventListener("submit", async (event) => {
     console.log(err);
   }
 });
+
+// form2.addEventListener("submit", async (event) => {
+//   try {
+//     event.preventDefault();
+//     const ul = document.querySelector("ul");
+//     const cn = document.querySelector("#cname2");
+//     console.log(cn.value);
+//     const reviews = await axios.get(`${url}/getData/${cn.value}`);
+//     const data = reviews.data;
+//     const allReviews = data.content;
+//     let total = 0;
+//     let count = 0;
+//     if (data.flag == 0) {
+//       ul.textContent = "No such company...";
+//     } else {
+//       allReviews.map((row) => {
+//         total += row.rating;
+//         count += 1;
+//       });
+//       const avg = total / count;
+//       ul.innerHTML = `Company : ${cn.value}--------------------Average : ${avg}`;
+//       allReviews.map((row) => {
+//         const li1 = document.createElement("li");
+//         li1.textContent = `Pros : ${row.pros}`;
+//         ul.appendChild(li1);
+
+//         const li2 = document.createElement("li");
+//         li2.textContent = `Cons : ${row.cons}`;
+//         ul.appendChild(li2);
+
+//         const li3 = document.createElement("li");
+//         li3.textContent = `Rating : ${row.rating}`;
+//         ul.appendChild(li3);
+//         const hr = document.createElement("hr");
+//         ul.appendChild(hr);
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
