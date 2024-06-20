@@ -21,17 +21,15 @@ async function borrowed() {
         bname.dataset.value = book.bname;
 
         const takenDate = document.createElement("label");
-        takenDate.textContent = `Book taken Date : ${book.takenDate.slice(
-          0,
-          -1
-        )}`;
+        takenDate.textContent = `Book taken Date : ${book.takenDate
+          .slice(0, -5)
+          .replace("T", ", ")}`;
         takenDate.dataset.value = book.takenDate;
 
         const returnDate = document.createElement("label");
-        returnDate.textContent = `Book return Date : ${book.returnDate.slice(
-          0,
-          -1
-        )}`;
+        returnDate.textContent = `Book return Date : ${book.returnDate
+          .slice(0, -5)
+          .replace("T", ", ")}`;
         returnDate.dataset.value = book.returnDate;
 
         const date1 = new Date(book.takenDate);
@@ -163,10 +161,9 @@ async function returnedBooks() {
       currentFine.dataset.value = fine;
 
       const returnedDate = document.createElement("label");
-      returnedDate.textContent = `Book returned Date : ${book.returnedDate.slice(
-        0,
-        -1
-      )}`;
+      returnedDate.textContent = `Book returned Date : ${book.returnedDate
+        .slice(0, -5)
+        .replace("T", ", ")}`;
       returnedDate.dataset.value = book.returnedDate;
 
       div.appendChild(bname);
